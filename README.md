@@ -4,7 +4,7 @@
 
 - 🌱 I’m currently learning **Django, SpringBoot, React, etc**
 
-- 👨‍💻 All of my projects are available at [https://github.com/jaicabher1/](https://github.com/jaicabher1/)
+- 👨‍💻 All of my repositories are available at [repositories](https://github.com/jaicabher1?tab=repositories)
 
 - 📫 How to reach me **jcaballeroh02@gmail.com**
 
