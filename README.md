@@ -10,9 +10,7 @@
 
 - 👨‍💻 All of my repositories are available at [repositories](https://github.com/jaicabher1?tab=repositories)
 
-- 📫 How to reach me <a href="https://mailto:jcaballeroh02@gmail.com" target="blank"><img align="center"
-         src="https://img.shields.io/badge/gmail-EA4335.svg?style=for-the-badge&logo=gmail&logoColor=white"
-         alt="azzar" height="30"/></a>
+- 📫 How to reach me **jcaballeroh02@gmail.com**
 
 - 📄 Know about my experiences <a href="https://www.linkedin.com/in/jcaballeroh/" target="blank"><img align="center"
          src="https://img.shields.io/badge/linkedin-%231DA1F2.svg?style=for-the-badge&logo=linkedin&logoColor=white"
