@@ -1,0 +1,19 @@
+Asunciones en planificación clásica: 
+1. Conjuntos finitos de estados y acciones. 
+2. Estado en que se encuentra el sistema completamente observable.
+3. Efectos deterministas de las acciones. 
+4. Sistema solo cambia por medio de las acciones. 
+5. Planes como secuencias de acciones.
+6. Objetivo como conjuntos de estados. 
+7. Ejecución instantánea de acciones. 
+8. El problema no cambia mientras se planifica.
+
+Cambios en planificación bajo incertidumbre: 3. Efectos no deterministas de las acciones.  5. Planes como políticas de acciones. 6. Objetivo como optimización de políticas. 
+
+Equilibrio necesario entre explotación y exploración:
+
+• Explotación: repetir las mejores acciones encontradas para maximizar la recompensa acumulada.
+
+• Exploración: considerar todas las posibles acciones para asegurar encontrar la mejor.
+
+Política ε-voraz (ε ∈ (0, 1)): en cada paso elegir con probabilidad 1 − ε la mejor acción y con probabilidad ε una acción aleatoria
