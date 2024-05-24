@@ -1,0 +1,122 @@
+from py2pddl import Domain, create_type, predicate, action, goal, init
+
+class MundoBloquesDomain(Domain):
+    Object = create_type("Object")
+    Bloque = create_type("Bloque", Object)
+    
+    @predicate(Bloque)
+    def sobre_la_mesa(self, b):
+        """Representa que el bloque b está sobre la mesa"""
+    
+    @predicate(Bloque, Bloque)
+    def sobre(self, b1, b2):
+        """Representa que el bloque b1 está sobre el bloque b2"""
+    
+    @predicate(Bloque)
+    def despejado(self, b):
+        """Representa que el bloque b no tiene ningún bloque encima"""
+    
+    @predicate(Bloque)
+    def agarrado(self, b):
+        """Representa que el brazo robótico ha cogido el bloque b"""
+    
+    @predicate()
+    def brazo_libre(self):
+        """Representa que el brazo robótico no tiene cogido ningún bloque"""
+    
+    @action(Bloque)
+    def agarrar(self, b):
+        """Representa que el brazo robótico coge el bloque b que está
+        sobre la mesa"""
+        precondiciones = [self.sobre_la_mesa(b),
+                          self.despejado(b),
+                          self.brazo_libre()]
+        efectos = [self.agarrado(b),
+                   ~self.sobre_la_mesa(b),
+                   ~self.despejado(b),
+                   ~self.brazo_libre()]
+        return precondiciones, efectos
+    
+    @action(Bloque)
+    def bajar(self, b):
+        """Representa que el brazo robótico deja el bloque b sobre la mesa"""
+        precondiciones = [self.agarrado(b)]
+        efectos = [self.sobre_la_mesa(b),
+                   self.despejado(b),
+                   self.brazo_libre(),
+                   ~self.agarrado(b)]
+        return precondiciones, efectos
+    
+    @action(Bloque, Bloque)
+    def desapilar(self, b1, b2):
+        """Representa que el brazo robótico coge el bloque b1 que está
+        sobre el bloque b2"""
+        precondiciones = [self.sobre(b1, b2),
+                          self.despejado(b1),
+                          self.brazo_libre()]
+        efectos = [self.agarrado(b1),
+                   self.despejado(b2),
+                   ~self.sobre(b1, b2),
+                   ~self.despejado(b1),
+                   ~self.brazo_libre()]
+        return precondiciones, efectos
+    
+    @action(Bloque, Bloque)
+    def apilar(self, b1, b2):
+        """Representa que el brazo robótico deja el bloque b1 sobre
+        el bloque b2"""
+        precondiciones = [self.agarrado(b1),
+                          self.despejado(b2)]
+        efectos = [self.sobre(b1, b2),
+                   self.despejado(b1),
+                   self.brazo_libre(),
+                   ~self.agarrado(b1),
+                   ~self.despejado(b2)]
+        return precondiciones, efectos
+
+
+
+
+dominio = MundoBloquesDomain()
+dominio.generate_domain_pddl(filename="dominio_mundo_bloques_ej")
+
+
+
+# empiezo con mesa - a - b - c y quiero llegar a mesa - c - b - a
+
+from py2pddl import goal, init
+
+class MundoBloquesProblem(MundoBloquesDomain):  # py2pddl obtiene el nombre de la instancia
+                                                # del nombre de la clase, pero borrando de
+                                                # él la palabra problem
+    def __init__(self):
+        super().__init__()
+        self.bloques = MundoBloquesDomain.Bloque.create_objs(["A", "B", "C"])
+        # La expresión
+        # self.bloques = MundoBloquesDomain.Bloque.create_objs([1, 2, 3], prefix="B")
+        # crearía los bloques B1, B2 y B3, a los que luego podríamos referirnos mediante
+        # self.bloques[1], self.bloques[2] y self.bloques[3], respectivamente.
+    
+    @init
+    def init(self):
+        return [self.sobre(self.bloques["C"], self.bloques["B"]),
+                self.sobre(self.bloques["B"], self.bloques["A"]),
+                self.despejado(self.bloques["C"]),
+                self.brazo_libre()]
+    
+    @goal
+    def goal(self):
+        return [self.sobre(self.bloques["B"], self.bloques["C"]),
+                self.sobre(self.bloques["A"], self.bloques["B"]),
+                self.despejado(self.bloques["A"])]
+
+
+
+problema = MundoBloquesProblem()
+problema.generate_problem_pddl(filename="problema_mundo_bloques_ej")
+
+heuristica y A estrela
+
+!pyperplan -H hmax -s astar dominio_mundo_bloques_ej.pddl problema_mundo_bloques_ej.pddl
+
+
